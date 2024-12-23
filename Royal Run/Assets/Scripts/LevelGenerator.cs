@@ -1,19 +1,22 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-	[SerializeField] private GameObject chunkPrefab;
-	[SerializeField] private int chunksAmount = 12;
-	[SerializeField] private Transform chunksContainer;
-	[SerializeField] private float chunkSpeed = 8f;
-	
-	GameObject[] _chunks;
+	[SerializeField] GameObject chunkPrefab;
+	[SerializeField] int initialChunksAmount = 12;
+	[SerializeField] Transform chunksContainer;
+	[SerializeField] float chunkSpeed = 8f;
+
+	readonly List<GameObject> _chunks = new();
+	Camera _camera;
 
 	void Start()
 	{
-		_chunks = new GameObject[chunksAmount];
+		_camera = Camera.main;
 		
-		SpawnChunks();
+		SpawnInitialChunks();
 	}
 
 	void Update()
@@ -21,29 +24,49 @@ public class LevelGenerator : MonoBehaviour
 		MoveChunks();
 	}
 
-	void SpawnChunks()
+	void SpawnInitialChunks()
 	{
-		var chunkSize = GetChunkSize();
-		
-		for (var i = 0; i < chunksAmount; i++)
+		for (var i = 0; i < initialChunksAmount; i++)
 		{
-			var chunkPosition = GetChunkPosition(i, chunkSize);
-			
-			var newChunk = Instantiate(chunkPrefab, chunkPosition, Quaternion.identity, chunksContainer);
-			
-			_chunks[i] = newChunk;
+			SpawnChunk();
 		}
 	}
 
 	void MoveChunks()
 	{
-		for (var i = 0; i < chunksAmount; i++)
+		var chunksCopy = _chunks.ToList();
+		
+		foreach (var chunk in chunksCopy)
 		{
-			_chunks[i].transform.Translate(-transform.forward * (chunkSpeed * Time.deltaTime));
+			chunk.transform.Translate(-transform.forward * (chunkSpeed * Time.deltaTime));
+			
+			var isChunkBehindCamera = chunk.transform.position.z <= _camera.transform.position.z;
+
+			if (isChunkBehindCamera)
+			{
+				RemoveChunk(chunk);
+				
+				SpawnChunk();
+			}
 		}
+	}
+	
+	void SpawnChunk()
+	{
+		var newChunkPosition = _chunks.Count == 0 ? new Vector3(0, 0, 0) : GetNewChunkPosition(_chunks.Last());
+		
+		var newChunk = Instantiate(chunkPrefab, newChunkPosition, Quaternion.identity, chunksContainer);
+		
+		_chunks.Add(newChunk);
+	}
+
+	void RemoveChunk(GameObject chunk)
+	{
+		_chunks.Remove(chunk);
+		Destroy(chunk);
 	}
 
 	float GetChunkSize() => chunkPrefab.transform.GetChild(0).GetChild(0).localScale.z;
 	
-	Vector3 GetChunkPosition(int chunkIndex, float chunkSize) => new Vector3(transform.position.x, transform.position.y, transform.position.z + chunkIndex * chunkSize);
+	Vector3 GetNewChunkPosition(GameObject previousChunk) => new(previousChunk.transform.position.x, transform.position.y, previousChunk.transform.position.z + GetChunkSize());
 }
