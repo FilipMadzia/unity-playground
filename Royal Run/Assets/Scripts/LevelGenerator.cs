@@ -5,16 +5,45 @@ public class LevelGenerator : MonoBehaviour
 	[SerializeField] private GameObject chunkPrefab;
 	[SerializeField] private int chunksAmount = 12;
 	[SerializeField] private Transform chunksContainer;
+	[SerializeField] private float chunkSpeed = 8f;
+	
+	GameObject[] _chunks;
 
 	void Start()
 	{
-		var chunkSize = chunkPrefab.transform.GetChild(0).GetChild(0).localScale.z;
+		_chunks = new GameObject[chunksAmount];
 		
-		for (int i = 0; i < chunksAmount; i++)
+		SpawnChunks();
+	}
+
+	void Update()
+	{
+		MoveChunks();
+	}
+
+	void SpawnChunks()
+	{
+		var chunkSize = GetChunkSize();
+		
+		for (var i = 0; i < chunksAmount; i++)
 		{
-			var chunkPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + i * chunkSize);
+			var chunkPosition = GetChunkPosition(i, chunkSize);
 			
-			Instantiate(chunkPrefab, chunkPosition, Quaternion.identity, chunksContainer);
+			var newChunk = Instantiate(chunkPrefab, chunkPosition, Quaternion.identity, chunksContainer);
+			
+			_chunks[i] = newChunk;
 		}
 	}
+
+	void MoveChunks()
+	{
+		for (var i = 0; i < chunksAmount; i++)
+		{
+			_chunks[i].transform.Translate(-transform.forward * (chunkSpeed * Time.deltaTime));
+		}
+	}
+
+	float GetChunkSize() => chunkPrefab.transform.GetChild(0).GetChild(0).localScale.z;
+	
+	Vector3 GetChunkPosition(int chunkIndex, float chunkSize) => new Vector3(transform.position.x, transform.position.y, transform.position.z + chunkIndex * chunkSize);
 }
