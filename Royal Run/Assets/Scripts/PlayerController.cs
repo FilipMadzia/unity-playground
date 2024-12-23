@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] float movementSpeed = 5f;
+    [SerializeField] private float maxXPosition = 4.5f;
+    [SerializeField] private float maxZPosition = 5f;
     
     Rigidbody _rigidbody;
     Vector2 _movement;
@@ -31,6 +34,9 @@ public class PlayerController : MonoBehaviour
         var moveDirection = new Vector3(_movement.x, 0, _movement.y);
 
         var moveToPosition = currentPosition + moveDirection * (movementSpeed * Time.fixedDeltaTime);
+        
+        moveToPosition.x = Mathf.Clamp(moveToPosition.x, -maxXPosition, maxXPosition);
+        moveToPosition.z = Mathf.Clamp(moveToPosition.z, 0, maxZPosition);
         
         return moveToPosition;
     }

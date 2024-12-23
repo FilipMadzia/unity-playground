@@ -8,6 +8,7 @@ public class LevelGenerator : MonoBehaviour
 	[SerializeField] int initialChunksAmount = 12;
 	[SerializeField] Transform chunksContainer;
 	[SerializeField] float chunkSpeed = 8f;
+	[SerializeField] float chunkSize = 10f;
 
 	readonly List<GameObject> _chunks = new();
 	Camera _camera;
@@ -65,8 +66,6 @@ public class LevelGenerator : MonoBehaviour
 		_chunks.Remove(chunk);
 		Destroy(chunk);
 	}
-
-	float GetChunkSize() => chunkPrefab.transform.GetChild(0).GetChild(0).localScale.z;
 	
-	Vector3 GetNewChunkPosition(GameObject previousChunk) => new(previousChunk.transform.position.x, transform.position.y, previousChunk.transform.position.z + GetChunkSize());
+	Vector3 GetNewChunkPosition(GameObject previousChunk) => new(previousChunk.transform.position.x, transform.position.y, previousChunk.transform.position.z + chunkSize);
 }
