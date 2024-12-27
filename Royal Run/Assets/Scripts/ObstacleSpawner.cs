@@ -8,18 +8,18 @@ public class ObstacleSpawner : MonoBehaviour
 
     void Start()
     {
-        var coroutine = SpawnObstaclesInInterval(5, spawnInterval);
+        var coroutine = SpawnObstaclesInInterval();
         
         StartCoroutine(coroutine);
     }
 
-    IEnumerator SpawnObstaclesInInterval(int obstacleCount, float seconds)
+    IEnumerator SpawnObstaclesInInterval()
     {
-        for (var i = 0; i < obstacleCount; i++)
+        while (true)
         {
-            yield return new WaitForSeconds(seconds);
+            yield return new WaitForSeconds(spawnInterval);
         
-            Instantiate(obstaclePrefab, transform.position, Quaternion.identity);
+            Instantiate(obstaclePrefab, transform.position, Random.rotation);
         }
     }
 }
