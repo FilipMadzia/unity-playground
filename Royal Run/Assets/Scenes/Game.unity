@@ -242,6 +242,37 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!1 &75595293
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 75595294}
+  m_Layer: 0
+  m_Name: Obstacles Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &75595294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75595293}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 40}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &179873993
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +516,7 @@ Transform:
   m_GameObject: {fileID: 401129100}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 40}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -503,8 +534,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb3316dc94e91b488704af50d85f6d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePrefab: {fileID: 5949471995793020557, guid: 2917d89d51ff5944ba63e01334acf8b1, type: 3}
+  obstaclePrefabs:
+  - {fileID: 5949471995793020557, guid: 2917d89d51ff5944ba63e01334acf8b1, type: 3}
+  - {fileID: 3954652271616746310, guid: bd3719f1c3133254595203e8c06def1a, type: 3}
+  - {fileID: 2561123348077137144, guid: a03a233e66c302f419e06749eca9d92c, type: 3}
+  - {fileID: 1924331872769566805, guid: c800426ca67001e48ae42701a81d617d, type: 3}
+  - {fileID: 6125404797974947836, guid: c30909c6fcbf86148bf9cbe30ae472a9, type: 3}
   spawnInterval: 3
+  obstaclesContainer: {fileID: 75595294}
+  spawnWidth: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,5 +816,6 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 55587129}
   - {fileID: 186112680}
-  - {fileID: 179873994}
   - {fileID: 401129101}
+  - {fileID: 179873994}
+  - {fileID: 75595294}

@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject obstaclePrefab;
+    [SerializeField] GameObject[] obstaclePrefabs;
     [SerializeField] float spawnInterval;
+    [SerializeField] Transform obstaclesContainer;
+    [SerializeField] private float spawnWidth = 4f;
 
     void Start()
     {
@@ -18,8 +20,12 @@ public class ObstacleSpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnInterval);
+            
+            var obstaclePrefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+
+            var obstaclePositionOffset = new Vector3(Random.Range(-spawnWidth, spawnWidth), 0, 0);
         
-            Instantiate(obstaclePrefab, transform.position, Random.rotation);
+            Instantiate(obstaclePrefab, obstaclesContainer.position + obstaclePositionOffset, Random.rotation, obstaclesContainer);
         }
     }
 }
